@@ -4,7 +4,6 @@ import {
   Text, 
   TextInput, 
   TouchableOpacity, 
-  StyleSheet, 
   SafeAreaView,
   KeyboardAvoidingView,
   Platform,
@@ -12,6 +11,7 @@ import {
 } from 'react-native';
 import TaskList from '../components/tasks/TaskList';
 import TagList from '../components/tags/TagList';
+import homeScreenStyles from '../styles/screens/homeScreenStyles';
 
 const HomeScreen = () => {
   const [tasks, setTasks] = useState([]);
@@ -90,24 +90,24 @@ const HomeScreen = () => {
   const filteredTasks = getFilteredTasks();
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={homeScreenStyles.container}>
       <KeyboardAvoidingView 
-        style={styles.container}
+        style={homeScreenStyles.container}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
         {/* Header */}
-        <View style={styles.header}>
-          <Text style={styles.title}>Task Manager</Text>
-          <Text style={styles.subtitle}>
+        <View style={homeScreenStyles.header}>
+          <Text style={homeScreenStyles.title}>Task Manager</Text>
+          <Text style={homeScreenStyles.subtitle}>
             {stats.total} tasks • {stats.active} active • {stats.completed} completed
           </Text>
         </View>
 
         {/* Add Task Section */}
-        <View style={styles.addTaskSection}>
-          <View style={styles.inputContainer}>
+        <View style={homeScreenStyles.addTaskSection}>
+          <View style={homeScreenStyles.inputContainer}>
             <TextInput
-              style={styles.textInput}
+              style={homeScreenStyles.textInput}
               placeholder="Add a new task..."
               value={newTaskText}
               onChangeText={setNewTaskText}
@@ -115,11 +115,11 @@ const HomeScreen = () => {
               returnKeyType="done"
             />
             <TouchableOpacity
-              style={styles.addButton}
+              style={homeScreenStyles.addButton}
               onPress={addTask}
               activeOpacity={0.7}
             >
-              <Text style={styles.addButtonText}>+</Text>
+              <Text style={homeScreenStyles.addButtonText}>+</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -143,64 +143,5 @@ const HomeScreen = () => {
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-  },
-  header: {
-    paddingHorizontal: 20,
-    paddingVertical: 20,
-    backgroundColor: '#fff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0',
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 5,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: '#666',
-  },
-  addTaskSection: {
-    backgroundColor: '#fff',
-    paddingHorizontal: 20,
-    paddingVertical: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0',
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  textInput: {
-    flex: 1,
-    height: 50,
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 25,
-    paddingHorizontal: 20,
-    fontSize: 16,
-    backgroundColor: '#f9f9f9',
-  },
-  addButton: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: '#007AFF',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: 10,
-  },
-  addButtonText: {
-    fontSize: 24,
-    color: '#fff',
-    fontWeight: 'bold',
-  },
-});
 
 export default HomeScreen;
