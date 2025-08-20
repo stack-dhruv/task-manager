@@ -2,9 +2,12 @@ import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import taskComponentStyles from '../../styles/components/taskComponentStyles';
 
-const TaskComponent = ({ task, onToggleComplete, onDelete }) => {
+const TaskComponent = ({ task, onToggleComplete, onDelete, isCompleted }) => {
   return (
-    <View style={taskComponentStyles.taskContainer}>
+    <View style={[
+      taskComponentStyles.taskContainer,
+      isCompleted && taskComponentStyles.taskContainerCompleted
+    ]}>
       <TouchableOpacity 
         style={taskComponentStyles.taskContent}
         onPress={() => onToggleComplete(task.id)}
@@ -17,12 +20,22 @@ const TaskComponent = ({ task, onToggleComplete, onDelete }) => {
           ]}>
             {task.completed && <Text style={taskComponentStyles.checkmark}>✓</Text>}
           </View>
-          <Text style={[
-            taskComponentStyles.taskText,
-            task.completed && taskComponentStyles.taskTextCompleted
-          ]}>
-            {task.description}
-          </Text>
+          <View style={taskComponentStyles.taskTextContainer}>
+            <Text style={[
+              taskComponentStyles.taskTitle,
+              task.completed && taskComponentStyles.taskTitleCompleted
+            ]}>
+              {task.title || task.description}
+            </Text>
+            {task.description && task.title && (
+              <Text style={[
+                taskComponentStyles.taskDescription,
+                task.completed && taskComponentStyles.taskDescriptionCompleted
+              ]}>
+                {task.description}
+              </Text>
+            )}
+          </View>
         </View>
       </TouchableOpacity>
       

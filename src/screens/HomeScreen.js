@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { 
   View, 
   Text, 
-  TextInput, 
   TouchableOpacity, 
   SafeAreaView,
   KeyboardAvoidingView,
@@ -11,32 +10,29 @@ import {
 } from 'react-native';
 import TaskList from '../components/tasks/TaskList';
 import TagList from '../components/tags/TagList';
+import AddTaskModal from '../components/tasks/AddTaskModal';
 import homeScreenStyles from '../styles/screens/homeScreenStyles';
 
 const HomeScreen = () => {
   const [tasks, setTasks] = useState([]);
-  const [newTaskText, setNewTaskText] = useState('');
   const [selectedFilter, setSelectedFilter] = useState('All');
+  const [showCompleted, setShowCompleted] = useState(true);
+  const [showAddTaskModal, setShowAddTaskModal] = useState(false);
 
   // Filter options
   const filterTags = ['All', 'Active', 'Completed'];
 
   // Add new task
-  const addTask = () => {
-    if (newTaskText.trim() === '') {
-      Alert.alert('Error', 'Please enter a task description');
-      return;
-    }
-
+  const addTask = ({ title, description }) => {
     const newTask = {
       id: Date.now(),
-      description: newTaskText.trim(),
+      title: title,
+      description: description,
       completed: false,
       createdAt: new Date(),
     };
 
     setTasks([newTask, ...tasks]);
-    setNewTaskText('');
   };
 
   // Toggle task completion
@@ -66,13 +62,17 @@ const HomeScreen = () => {
     );
   };
 
+  // Get active and completed tasks
+  const activeTasks = tasks.filter(task => !task.completed);
+  const completedTasks = tasks.filter(task => task.completed);
+
   // Filter tasks based on selected filter
   const getFilteredTasks = () => {
     switch (selectedFilter) {
       case 'Active':
-        return tasks.filter(task => !task.completed);
+        return activeTasks;
       case 'Completed':
-        return tasks.filter(task => task.completed);
+        return completedTasks;
       default:
         return tasks;
     }
@@ -81,13 +81,12 @@ const HomeScreen = () => {
   // Get task statistics
   const getTaskStats = () => {
     const total = tasks.length;
-    const completed = tasks.filter(task => task.completed).length;
-    const active = total - completed;
+    const completed = completedTasks.length;
+    const active = activeTasks.length;
     return { total, completed, active };
   };
 
   const stats = getTaskStats();
-  const filteredTasks = getFilteredTasks();
 
   return (
     <SafeAreaView style={homeScreenStyles.container}>
@@ -103,27 +102,6 @@ const HomeScreen = () => {
           </Text>
         </View>
 
-        {/* Add Task Section */}
-        <View style={homeScreenStyles.addTaskSection}>
-          <View style={homeScreenStyles.inputContainer}>
-            <TextInput
-              style={homeScreenStyles.textInput}
-              placeholder="Add a new task..."
-              value={newTaskText}
-              onChangeText={setNewTaskText}
-              onSubmitEditing={addTask}
-              returnKeyType="done"
-            />
-            <TouchableOpacity
-              style={homeScreenStyles.addButton}
-              onPress={addTask}
-              activeOpacity={0.7}
-            >
-              <Text style={homeScreenStyles.addButtonText}>+</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-
         {/* Filter Tags */}
         {tasks.length > 0 && (
           <TagList
@@ -133,11 +111,77 @@ const HomeScreen = () => {
           />
         )}
 
-        {/* Task List */}
-        <TaskList
-          tasks={filteredTasks}
-          onToggleComplete={toggleTaskComplete}
-          onDelete={deleteTask}
+        {/* Task Lists */}
+        <View style={homeScreenStyles.taskContainer}>
+          {selectedFilter === 'All' ? (
+            <>
+              {/* Active Tasks */}
+              {activeTasks.length > 0 && (
+                <TaskList
+                  tasks={activeTasks}
+                  onToggleComplete={toggleTaskComplete}
+                  onDelete={deleteTask}
+                  showHeader={false}
+                />
+              )}
+
+              {/* Completed Section */}
+              {completedTasks.length > 0 && (
+                <View style={homeScreenStyles.completedSection}>
+                  <TouchableOpacity 
+                    style={homeScreenStyles.completedHeader}
+                    onPress={() => setShowCompleted(!showCompleted)}
+                    activeOpacity={0.7}
+                  >
+                    <Text style={homeScreenStyles.completedHeaderText}>
+                      {showCompleted ? '▼' : '▶'} Completed
+                    </Text>
+                  </TouchableOpacity>
+                  
+                  {showCompleted && (
+                    <TaskList
+                      tasks={completedTasks}
+                      onToggleComplete={toggleTaskComplete}
+                      onDelete={deleteTask}
+                      showHeader={false}
+                      isCompleted={true}
+                    />
+                  )}
+                </View>
+              )}
+            </>
+          ) : (
+            <TaskList
+              tasks={getFilteredTasks()}
+              onToggleComplete={toggleTaskComplete}
+              onDelete={deleteTask}
+              showHeader={false}
+            />
+          )}
+
+          {tasks.length === 0 && (
+            <View style={homeScreenStyles.emptyContainer}>
+              <Text style={homeScreenStyles.emptyText}>No tasks yet!</Text>
+              <Text style={homeScreenStyles.emptySubtext}>Add a task to get started</Text>
+            </View>
+          )}
+        </View>
+
+        {/* Add Task Button */}
+        <TouchableOpacity
+          style={homeScreenStyles.addTaskButton}
+          onPress={() => setShowAddTaskModal(true)}
+          activeOpacity={0.8}
+        >
+          <Text style={homeScreenStyles.addTaskButtonIcon}>+</Text>
+          <Text style={homeScreenStyles.addTaskButtonText}>Add a Task</Text>
+        </TouchableOpacity>
+
+        {/* Add Task Modal */}
+        <AddTaskModal
+          visible={showAddTaskModal}
+          onClose={() => setShowAddTaskModal(false)}
+          onAddTask={addTask}
         />
       </KeyboardAvoidingView>
     </SafeAreaView>

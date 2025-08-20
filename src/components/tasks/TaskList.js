@@ -3,16 +3,17 @@ import { FlatList, View, Text } from 'react-native';
 import TaskComponent from './TaskComponent';
 import taskListStyles from '../../styles/components/taskListStyles';
 
-const TaskList = ({ tasks, onToggleComplete, onDelete }) => {
+const TaskList = ({ tasks, onToggleComplete, onDelete, showHeader = true, isCompleted = false }) => {
   const renderTask = ({ item }) => (
     <TaskComponent
       task={item}
       onToggleComplete={onToggleComplete}
       onDelete={onDelete}
+      isCompleted={isCompleted}
     />
   );
 
-  if (tasks.length === 0) {
+  if (tasks.length === 0 && showHeader) {
     return (
       <View style={taskListStyles.emptyContainer}>
         <Text style={taskListStyles.emptyText}>No tasks yet!</Text>
@@ -28,6 +29,7 @@ const TaskList = ({ tasks, onToggleComplete, onDelete }) => {
       keyExtractor={(item) => item.id.toString()}
       style={taskListStyles.list}
       showsVerticalScrollIndicator={false}
+      scrollEnabled={tasks.length > 0}
     />
   );
 };

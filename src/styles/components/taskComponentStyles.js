@@ -6,7 +6,7 @@ import typography from '../common/typography';
 export default StyleSheet.create({
   taskContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     backgroundColor: colors.surface,
     padding: spacing.sectionPadding,
     marginVertical: spacing.itemMargin,
@@ -22,13 +22,17 @@ export default StyleSheet.create({
     elevation: 5,
   },
   
+  taskContainerCompleted: {
+    opacity: 0.7,
+  },
+  
   taskContent: {
     flex: 1,
   },
   
   taskInfo: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start',
   },
   
   checkbox: {
@@ -40,6 +44,7 @@ export default StyleSheet.create({
     marginRight: spacing.md,
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 2,
   },
   
   checkboxCompleted: {
@@ -52,6 +57,34 @@ export default StyleSheet.create({
     fontWeight: typography.fontWeight.bold,
   },
   
+  taskTextContainer: {
+    flex: 1,
+  },
+  
+  taskTitle: {
+    fontSize: typography.fontSize.md,
+    color: colors.textPrimary,
+    fontWeight: typography.fontWeight.medium,
+    marginBottom: spacing.xs,
+  },
+  
+  taskTitleCompleted: {
+    textDecorationLine: 'line-through',
+    color: colors.textTertiary,
+  },
+  
+  taskDescription: {
+    fontSize: typography.fontSize.sm,
+    color: colors.textSecondary,
+    lineHeight: typography.fontSize.sm * 1.4,
+  },
+  
+  taskDescriptionCompleted: {
+    textDecorationLine: 'line-through',
+    color: colors.textTertiary,
+  },
+  
+  // Legacy support for old task structure
   taskText: {
     fontSize: typography.fontSize.md,
     flex: 1,
