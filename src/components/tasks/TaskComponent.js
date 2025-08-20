@@ -25,9 +25,9 @@ const TaskComponent = ({ task, onToggleComplete, onDelete, isCompleted }) => {
               taskComponentStyles.taskTitle,
               task.completed && taskComponentStyles.taskTitleCompleted
             ]}>
-              {task.title || task.description}
+              {task.title}
             </Text>
-            {task.description && task.title && (
+            {task.description && (
               <Text style={[
                 taskComponentStyles.taskDescription,
                 task.completed && taskComponentStyles.taskDescriptionCompleted

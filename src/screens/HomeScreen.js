@@ -16,7 +16,6 @@ import homeScreenStyles from '../styles/screens/homeScreenStyles';
 const HomeScreen = () => {
   const [tasks, setTasks] = useState([]);
   const [selectedFilter, setSelectedFilter] = useState('All');
-  const [showCompleted, setShowCompleted] = useState(true);
   const [showAddTaskModal, setShowAddTaskModal] = useState(false);
 
   // Filter options
@@ -87,6 +86,7 @@ const HomeScreen = () => {
   };
 
   const stats = getTaskStats();
+  const filteredTasks = getFilteredTasks();
 
   return (
     <SafeAreaView style={homeScreenStyles.container}>
@@ -102,7 +102,7 @@ const HomeScreen = () => {
           </Text>
         </View>
 
-        {/* Filter Tags */}
+        {/* Filter Tags - Only show when there are tasks */}
         {tasks.length > 0 && (
           <TagList
             tags={filterTags}
@@ -113,56 +113,22 @@ const HomeScreen = () => {
 
         {/* Task Lists */}
         <View style={homeScreenStyles.taskContainer}>
-          {selectedFilter === 'All' ? (
-            <>
-              {/* Active Tasks */}
-              {activeTasks.length > 0 && (
-                <TaskList
-                  tasks={activeTasks}
-                  onToggleComplete={toggleTaskComplete}
-                  onDelete={deleteTask}
-                  showHeader={false}
-                />
-              )}
-
-              {/* Completed Section */}
-              {completedTasks.length > 0 && (
-                <View style={homeScreenStyles.completedSection}>
-                  <TouchableOpacity 
-                    style={homeScreenStyles.completedHeader}
-                    onPress={() => setShowCompleted(!showCompleted)}
-                    activeOpacity={0.7}
-                  >
-                    <Text style={homeScreenStyles.completedHeaderText}>
-                      {showCompleted ? '▼' : '▶'} Completed
-                    </Text>
-                  </TouchableOpacity>
-                  
-                  {showCompleted && (
-                    <TaskList
-                      tasks={completedTasks}
-                      onToggleComplete={toggleTaskComplete}
-                      onDelete={deleteTask}
-                      showHeader={false}
-                      isCompleted={true}
-                    />
-                  )}
-                </View>
-              )}
-            </>
-          ) : (
+          {filteredTasks.length > 0 ? (
             <TaskList
-              tasks={getFilteredTasks()}
+              tasks={filteredTasks}
               onToggleComplete={toggleTaskComplete}
               onDelete={deleteTask}
               showHeader={false}
+              isCompleted={selectedFilter === 'Completed'}
             />
-          )}
-
-          {tasks.length === 0 && (
+          ) : (
             <View style={homeScreenStyles.emptyContainer}>
-              <Text style={homeScreenStyles.emptyText}>No tasks yet!</Text>
-              <Text style={homeScreenStyles.emptySubtext}>Add a task to get started</Text>
+              <Text style={homeScreenStyles.emptyText}>
+                {tasks.length === 0 ? 'No tasks yet!' : `No ${selectedFilter.toLowerCase()} tasks`}
+              </Text>
+              <Text style={homeScreenStyles.emptySubtext}>
+                {tasks.length === 0 ? 'Add a task to get started' : `You have no ${selectedFilter.toLowerCase()} tasks`}
+              </Text>
             </View>
           )}
         </View>

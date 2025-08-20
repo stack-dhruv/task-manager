@@ -33,47 +33,29 @@ export default StyleSheet.create({
     flex: 1,
   },
   
-  completedSection: {
-    marginTop: spacing.lg,
-  },
-  
-  completedHeader: {
-    backgroundColor: colors.surface,
-    paddingHorizontal: spacing.xl,
-    paddingVertical: spacing.md,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.borderLight,
-    marginHorizontal: spacing.xl,
-    borderRadius: 8,
-    marginBottom: spacing.sm,
-  },
-  
-  completedHeaderText: {
-    fontSize: typography.fontSize.md,
-    fontWeight: typography.fontWeight.medium,
-    color: colors.textSecondary,
-  },
-  
   emptyContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: spacing.xl,
+    paddingBottom: 100, // Account for the add task button at the bottom
   },
   
   emptyText: {
     fontSize: typography.fontSize.xl,
     fontWeight: typography.fontWeight.bold,
     color: colors.textTertiary,
-    marginBottom: spacing.buttonPadding,
+    marginBottom: spacing.md,
+    textAlign: 'center',
   },
   
   emptySubtext: {
     fontSize: typography.fontSize.md,
     color: colors.textLight,
+    textAlign: 'center',
   },
 
-  // New Add Task Button
+  // Add Task Button
   addTaskButton: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -106,58 +88,5 @@ export default StyleSheet.create({
     fontSize: typography.fontSize.md,
     color: colors.textSecondary,
     fontWeight: typography.fontWeight.medium,
-  },
-
-  // Remove old styles (keep for backward compatibility if needed)
-  addTaskSection: {
-    backgroundColor: colors.surface,
-    paddingHorizontal: spacing.xl,
-    paddingVertical: spacing.sectionPadding,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.borderLight,
-  },
-  
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: spacing.md,
-  },
-  
-  textInput: {
-    flex: 1,
-    height: 50,
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: 25,
-    paddingHorizontal: spacing.xl,
-    fontSize: typography.fontSize.md,
-    backgroundColor: colors.gray,
-  },
-  
-  descriptionInput: {
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: 10,
-    padding: spacing.md,
-    fontSize: typography.fontSize.md,
-    backgroundColor: colors.gray,
-    minHeight: 80,
-    textAlignVertical: 'top',
-  },
-  
-  addButton: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: colors.primary,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: spacing.buttonPadding,
-  },
-  
-  addButtonText: {
-    fontSize: typography.fontSize.xl,
-    color: colors.textInverse,
-    fontWeight: typography.fontWeight.bold,
   },
 });

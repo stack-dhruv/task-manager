@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, View, Text } from 'react-native';
+import { FlatList } from 'react-native';
 import TaskComponent from './TaskComponent';
 import taskListStyles from '../../styles/components/taskListStyles';
 
@@ -12,15 +12,6 @@ const TaskList = ({ tasks, onToggleComplete, onDelete, showHeader = true, isComp
       isCompleted={isCompleted}
     />
   );
-
-  if (tasks.length === 0 && showHeader) {
-    return (
-      <View style={taskListStyles.emptyContainer}>
-        <Text style={taskListStyles.emptyText}>No tasks yet!</Text>
-        <Text style={taskListStyles.emptySubtext}>Add a task to get started</Text>
-      </View>
-    );
-  }
 
   return (
     <FlatList
